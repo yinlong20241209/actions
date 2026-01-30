@@ -7,7 +7,7 @@ jobs:
   build:
     name: "Build Armbian"
     runs-on: ubuntu-22.04
-    timeout-minutes: 120
+    timeout-minutes: 300
 
     steps:
       # 1. 清理磁盘空间
@@ -30,17 +30,13 @@ jobs:
           
           # 硬编码所有参数，这里以 lemonpi + bookworm 为例
           ./compile.sh \
-            BOARD="lemonpi" \
-            BRANCH="edge" \
+            BOARD=nanopi-r3s-lts \
+            BRANCH=current \
             RELEASE="bookworm" \
             BUILD_MINIMAL="yes" \
             BUILD_DESKTOP="no" \
-            KERNEL_ONLY="no" \
             KERNEL_CONFIGURE="no" \
-            EXPERT="yes" \
-            BETA="no" \
-            PREFER_DOCKER="no" \
-            ROOTFS_TYPE="ext4" \
+            RELEASE=bookworm \
             SHARE_LOG="yes"
 
       # 4. 上传镜像文件
