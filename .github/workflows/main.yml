@@ -1,0 +1,53 @@
+name: "Simple Armbian Build"
+
+on:
+  workflow_dispatch:  # 仅手动触发
+
+jobs:
+  build:
+    name: "Build Armbian"
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+
+    steps:
+      # 1. 清理磁盘空间
+      - name: "Cleanup disk space"
+        run: |
+          sudo apt-get clean
+          sudo rm -rf /usr/local/lib/android /opt/ghc /usr/share/dotnet
+          df -h
+
+      # 2. 克隆构建系统
+      - name: "Clone Armbian build"
+        run: |
+          git clone https://github.com/armbian/build.git --depth=1
+          cd build
+
+      # 3. 执行构建（所有参数硬编码）
+      - name: "Run compile.sh"
+        run: |
+          cd build
+          
+          # 硬编码所有参数，这里以 lemonpi + bookworm 为例
+          ./compile.sh \
+            BOARD="lemonpi" \
+            BRANCH="edge" \
+            RELEASE="bookworm" \
+            BUILD_MINIMAL="yes" \
+            BUILD_DESKTOP="no" \
+            KERNEL_ONLY="no" \
+            KERNEL_CONFIGURE="no" \
+            EXPERT="yes" \
+            BETA="no" \
+            PREFER_DOCKER="no" \
+            ROOTFS_TYPE="ext4" \
+            SHARE_LOG="yes"
+
+      # 4. 上传镜像文件
+      - name: "Upload image"
+        uses: actions/upload-artifact@v4
+        with:
+          name: "armbian-lemonpi-bookworm"
+          path: build/output/images/*.img
+          if-no-files-found: error
+          retention-days: 5
