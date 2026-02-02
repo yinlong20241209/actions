@@ -17,12 +17,13 @@ jobs:
       - name: Send WeChat notification
         env:
           WEBHOOK_URL: ${{ secrets.WECHAT_WEBHOOK_URL }}
+          MESSAGE: ${{ env.MESSAGE }}
         run: |
           curl -fsSL -X POST "$WEBHOOK_URL" \
             -H 'Content-Type: application/json' \
             -d '{
               "msgtype": "text",
               "text": {
-                "content": "hello"
+                "content": "$MESSAGE"
               }
             }'
