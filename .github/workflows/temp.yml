@@ -1,0 +1,24 @@
+name: "Temp for test"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  echo:
+    name: "wx web hook"
+    runs-on: ubuntu-22.04
+    timeout-minutes: 300
+
+    steps:
+      - name: Send WeChat notification
+        env:
+          WEBHOOK_URL: ${{ secrets.WECHAT_WEBHOOK_URL }}
+        run: |
+          curl -fsSL -X POST "$WEBHOOK_URL" \
+            -H 'Content-Type: application/json' \
+            -d '{
+              "msgtype": "text",
+              "text": {
+                "content": "hello"
+              }
+            }'
