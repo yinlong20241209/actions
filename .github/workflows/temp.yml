@@ -10,6 +10,10 @@ jobs:
     timeout-minutes: 300
 
     steps:
+      - name: Set message
+        id: msg
+        run: echo "MESSAGE=hello from build $GITHUB_RUN_NUMBER" >> "$GITHUB_ENV"
+        
       - name: Send WeChat notification
         env:
           WEBHOOK_URL: ${{ secrets.WECHAT_WEBHOOK_URL }}
