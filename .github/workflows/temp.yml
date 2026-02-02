@@ -5,7 +5,7 @@ on:
 
 jobs:
   echo1:
-    name: "wx web hook"
+    name: "wx web hook1"
     runs-on: ubuntu-22.04
     timeout-minutes: 300
 
@@ -29,7 +29,7 @@ jobs:
             }"
 
   echo2:
-    name: "wx web hook"
+    name: "wx web hook2"
     runs-on: ubuntu-22.04
     timeout-minutes: 300
 
@@ -37,6 +37,56 @@ jobs:
       - name: Set message
         id: msg
         run: echo "MESSAGE=hello2 from build $GITHUB_RUN_NUMBER" >> "$GITHUB_ENV"
+        
+      - name: Send WeChat notification
+        env:
+          WEBHOOK_URL: ${{ secrets.WECHAT_WEBHOOK_URL }}
+          MESSAGE: ${{ env.MESSAGE }}
+        run: |
+          curl -fsSL -X POST "$WEBHOOK_URL" \
+            -H 'Content-Type: application/json' \
+            -d "{
+              \"msgtype\": \"text\",
+              \"text\": {
+                \"content\": \"$MESSAGE\"
+              }
+            }"
+
+  echo3:
+    name: "wx web hook3"
+    needs: [echo1,echo2]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 300
+
+    steps:
+      - name: Set message
+        id: msg
+        run: echo "MESSAGE=hello3 from build $GITHUB_RUN_NUMBER" >> "$GITHUB_ENV"
+        
+      - name: Send WeChat notification
+        env:
+          WEBHOOK_URL: ${{ secrets.WECHAT_WEBHOOK_URL }}
+          MESSAGE: ${{ env.MESSAGE }}
+        run: |
+          curl -fsSL -X POST "$WEBHOOK_URL" \
+            -H 'Content-Type: application/json' \
+            -d "{
+              \"msgtype\": \"text\",
+              \"text\": {
+                \"content\": \"$MESSAGE\"
+              }
+            }"
+
+  echo4:
+    name: "wx web hook4"
+    needs: echo3
+    runs-on: ubuntu-22.04
+    timeout-minutes: 300
+
+    steps:
+      - name: Set message
+        id: msg
+        run: echo "MESSAGE=hello4 from build $GITHUB_RUN_NUMBER" >> "$GITHUB_ENV"
         
       - name: Send WeChat notification
         env:
