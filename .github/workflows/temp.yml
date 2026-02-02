@@ -21,9 +21,9 @@ jobs:
         run: |
           curl -fsSL -X POST "$WEBHOOK_URL" \
             -H 'Content-Type: application/json' \
-            -d '{
-              "msgtype": "text",
-              "text": {
-                "content": "$MESSAGE"
+            -d "{
+              \"msgtype\": \"text\",
+              \"text\": {
+                \"content\": \"$MESSAGE\"
               }
-            }'
+            }"
