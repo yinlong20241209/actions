@@ -10,6 +10,17 @@ jobs:
     timeout-minutes: 30
 
     steps:
+      - name: list
+        run: ls -la
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+      - name: list
+        run: ls -la
+      - name: use repo file
+        run: |
+          chmod +x ./scripts/test.sh
+          ./scripts/test.sh
+          
       - name: Set message
         id: msg
         run: echo "MESSAGE=hello1 from build $GITHUB_RUN_NUMBER" >> "$GITHUB_ENV"
