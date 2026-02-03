@@ -19,7 +19,7 @@ jobs:
       - name: list
         run: ls -la
       - name: list
-        uses: ./.github/workflows/utils/list-file
+        uses: ./.github/workflows/utils/list-files
       - name: use repo file
         run: |
           chmod +x ./scripts/test.sh
