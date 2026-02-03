@@ -52,6 +52,11 @@ jobs:
           chmod +x ./scripts/test.sh
           ./scripts/test.sh
           touch ./scripts/new.sh
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ./scripts/*
 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v6.0.0
