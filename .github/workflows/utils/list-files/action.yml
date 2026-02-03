@@ -1,0 +1,8 @@
+name: 'List files'
+description: 'List files in current directory'
+runs:
+  using: composite
+  steps:
+    - name: List files
+      run: ls -la
+      shell: bash
