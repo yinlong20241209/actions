@@ -22,23 +22,19 @@ jobs:
       - name: "Clone Armbian build"
         run: |
           git clone https://github.com/armbian/build.git --depth=1
-          cd build
 
       # 3. 执行构建（所有参数硬编码）
       - name: "Run compile.sh"
         run: |
           cd build
           
-          # 硬编码所有参数，这里以 lemonpi + bookworm 为例
           ./compile.sh \
-            BOARD=nanopi-r3s-lts \
-            BRANCH=current \
-            RELEASE="bookworm" \
-            BUILD_MINIMAL="yes" \
-            BUILD_DESKTOP="no" \
+            BOARD=hinlink-h28k \
+            BRANCH=vendor \
+            RELEASE=trixie \
+            BUILD_MINIMAL=yes \
+            BUILD_DESKTOP=no \
             KERNEL_CONFIGURE="no" \
-            RELEASE=bookworm \
-            SHARE_LOG="yes"
 
       # 4. 上传镜像文件
       - name: "Upload image"
