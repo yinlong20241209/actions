@@ -13,16 +13,36 @@ jobs:
       - name: pwd
         run: pwd
       - name: list
-        uses: ./.github/workflows/utils/list-file
+        run: ls -la
       - name: Checkout
         uses: actions/checkout@v6.0.2
       - name: list
         run: ls -la
+      - name: list
+        uses: ./.github/workflows/utils/list-file
       - name: use repo file
         run: |
           chmod +x ./scripts/test.sh
           ./scripts/test.sh
-          
+          touch ./scripts/new.sh
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v6.0.0
+        with:
+          path: ./scripts/test.sh
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v6.0.0
+        with:
+          name: all-sh
+          path: ./scripts/*.sh
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v6.0.0
+        with:
+          name: should-not-found
+          path: ./scripts/*.s
+
       - name: Set message
         id: msg
         run: echo "MESSAGE=hello1 from build $GITHUB_RUN_NUMBER" >> "$GITHUB_ENV"
